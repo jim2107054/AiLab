@@ -37,13 +37,15 @@ def insertValue(position, symbol):
                 print("Computer wins")
             else:
                 print("You win")
-            exit()
+            return True
 
         if checkForDraw():
             print("It's a draw")
-            exit()
+            return True
+        return False
     else:
         print("Position already occupied!")
+        return False
 
 
 # -------------------------------
@@ -121,7 +123,7 @@ def computerMove():
                 bestScore = score
                 bestMove = key
 
-    insertValue(bestMove, computer)
+    return insertValue(bestMove, computer)
 
 
 # -------------------------------
@@ -132,6 +134,17 @@ print("You are O | Computer is X")
 printBoard(board)
 
 while True:
-    move = int(input("Enter position (1-9): "))
-    insertValue(move, player)
-    computerMove()
+    try:
+        move = int(input("Enter position (1-9): "))
+        if move < 1 or move > 9:
+            print("Please enter a number between 1 and 9")
+            continue
+        if insertValue(move, player):
+            break
+        if computerMove():
+            break
+    except ValueError:
+        print("Please enter a valid number")
+    except KeyboardInterrupt:
+        print("\nGame ended")
+        break
